@@ -1,0 +1,49 @@
+<!doctype html>
+
+<h1>Mountains</h1>
+
+<div id="mountains"></div>
+
+<script>
+  const MOUNTAINS = [
+    {name: "Kilimanjaro", height: 5895, place: "Tanzania"},
+    {name: "Everest", height: 8848, place: "Nepal"},
+    {name: "Mount Fuji", height: 3776, place: "Japan"},
+    {name: "Vaalserberg", height: 323, place: "Netherlands"},
+    {name: "Denali", height: 6168, place: "United States"},
+    {name: "Popocatepetl", height: 5465, place: "Mexico"},
+    {name: "Mont Blanc", height: 4808, place: "Italy/France"}
+  ];
+
+    let table = document.createElement("table");
+    let currentRow = document.createElement("tr");
+    for (let property in MOUNTAINS[0]) {
+        let heading = document.createElement("th")
+        heading.textContent = property;
+        currentRow.appendChild(heading);
+    }
+    table.appendChild(currentRow);
+    for (let mountain of MOUNTAINS) {
+        currentRow = document.createElement("tr");
+        for (let property in mountain) {
+            let data = document.createElement("td");
+            data.textContent = mountain[property];
+            currentRow.appendChild(data);
+        }
+        table.appendChild(currentRow);
+    }
+    document.getElementById("mountains").appendChild(table);
+    
+    function findCells(node, pattern){
+        if (node.nodeType == node.TEXT_NODE && pattern.test(node.nodeValue)) {
+            console.log(node.nodeValue); 
+            node.parentNode.style.textAlign = "right";
+        }
+        for (let i = 0; i < node.childNodes.length; i++){
+            let child = node.childNodes[i];
+            findCells(child, pattern); 
+        } 
+    }
+    findCells(document.documentElement, /^\d+$/);
+        
+</script>
