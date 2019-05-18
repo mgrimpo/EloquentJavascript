@@ -1,0 +1,43 @@
+<!doctype html>
+<style>
+    body {
+        font-size: 13pt;
+        margin: 0px;
+    }
+    ul {
+        background-color: darkgray;
+        padding: 0px;
+        margin: 0px;
+    }
+    li {
+         display: inline;
+         margin: 0px;
+    }
+    button {
+        background-color:darkgray;
+        color:gray;
+        padding: 20px 40px;
+        font-size: 14pt;
+    }
+    tab-panel {
+        background-color: gray;
+    }
+    tab-panel > div  {
+        background-color:	#DCDCDC;
+        border:1px solid gray;
+        padding: 10px;
+        min-height: 300px;
+        min-width: 100%;
+    }
+    .active {
+        background-color: #DCDCDC;
+        color:black;
+    }
+</style>
+
+<tab-panel>
+  <div data-tabname="one">Tab one</div>
+  <div data-tabname="two">Tab two</div>
+  <div data-tabname="three">Tab three</div>
+</tab-panel>
+<script src="tabs.js"></script>
