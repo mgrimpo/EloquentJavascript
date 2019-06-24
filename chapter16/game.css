@@ -3,6 +3,7 @@
                  border-spacing: 0;   }
 .background td { padding: 0;          }
 .lava          { background: rgb(255, 100, 100); }
+.monster          { background: rgb(0, 200, 100); }
 .wall          { background: white;   }
 
 .actor  { position: absolute;  }
