@@ -90,5 +90,5 @@ function drawStar(numSpikes,radius, color ="#0074D9"){
     cx.fill();
     cx.restore();
 }
-
 export default pointOnCircle;
+export {  pointOnCircle, drawTrapezoid, drawDiamond, drawStar, drawSpiral, drawZigZag, cx, canvas};
