@@ -72,4 +72,50 @@ function updatePicture(canvas, oldPicture, newPicture, scale) {
     }
 }
 
-document.querySelector("div").append(startPixelEditor({}));
+// Exercise : Circle
+function circle(pos, state, dispatch) {
+    let start = pos;
+
+    function drawCircle(end) {
+        let r = Math.sqrt(Math.pow(end.x - start.x, 2) +
+            Math.pow(end.y - start.y, 2));
+        let roundR = Math.ceil(r);
+
+        let drawn = [];
+        for (let x = start.x - roundR; x < start.x + roundR; x++) {
+            for (let y = start.y - roundR; y < start.y + roundR; y++) {
+                let distance = Math.sqrt(
+                    Math.pow(x - start.x, 2) +
+                    Math.pow(y - start.y, 2));
+                let inCircle = distance <= r;
+
+                let inPicture =
+                    x > 0 && x < state.picture.width &&
+                    y > 0 && y < state.picture.height;
+
+                if (inPicture && inCircle) {
+                    drawn.push({ x, y, color: state.color });
+                }
+            }
+        }
+        dispatch({ picture: state.picture.draw(drawn) });
+    }
+    return drawCircle;
+}
+function draw(pos, state, dispatch) {
+    function drawPixel({x, y}, state) {
+      let drawn = {x, y, color: state.color};
+      dispatch({picture: state.picture.draw([drawn])});
+    }
+    drawPixel(pos, state);
+    return drawPixel;
+  }
+
+  function line(pos, state, dispatch) {
+    // Your code here
+  }
+
+
+document.querySelector("div").append(
+    startPixelEditor({ tools: Object.assign({}, baseTools, { circle , draw}) })
+);
