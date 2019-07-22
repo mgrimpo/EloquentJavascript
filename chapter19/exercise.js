@@ -102,20 +102,53 @@ function circle(pos, state, dispatch) {
     }
     return drawCircle;
 }
+
+
+// Musterlösung...
 function draw(pos, state, dispatch) {
-    function drawPixel({x, y}, state) {
-      let drawn = {x, y, color: state.color};
-      dispatch({picture: state.picture.draw([drawn])});
+
+    let lastPoint = pos;
+    function drawPixel({ x, y }, state) {
+        let drawn;
+        let newPoint = {x, y};
+        if(x == lastPoint.x && y == lastPoint.y) 
+            drawn = [{ x, y, color: state.color }];
+        else {
+            drawn = line(lastPoint, newPoint, state.color);
+        }
+        dispatch({ picture: state.picture.draw(drawn) });
+        lastPoint = newPoint;
     }
     drawPixel(pos, state);
-    return drawPixel;
-  }
 
-  function line(pos, state, dispatch) {
-    // Your code here
-  }
+    function line(to, from, color) {
+        let dx = Math.abs(to.x - from.x);
+        let dy = Math.abs(to.y - from.y);
+        let points = [];
+        if (dx >= dy) {
+            if (from.x > to.x) [from, to] = [to, from];
+            let slope = (to.y - from.y) / (to.x - from.x);
+            for (let { x, y } = from; x < to.x; x++) {
+                points.push({ x, y: Math.floor(y), color});
+                y += slope;
+            }
+        }
+        else {
+            if (from.y > to.y) [from, to] = [to, from];
+            let slope = (to.x - from.x) / (to.y - from.y);
+            for (let { x, y } = from; y < to.y; y++) {
+                points.push({ x: Math.ceil(x), y, color});
+                x += slope;
+            }
+        }
+        return points;
+    }
+
+    return drawPixel;
+}
+
 
 
 document.querySelector("div").append(
-    startPixelEditor({ tools: Object.assign({}, baseTools, { circle , draw}) })
+    startPixelEditor({ tools: Object.assign({}, baseTools, { circle, draw }) })
 );
