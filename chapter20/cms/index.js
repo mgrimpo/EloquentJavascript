@@ -48,6 +48,8 @@ class FileViewer {
 class DirectoryEntry {
     constructor(entryName) {
         this.dom = document.createElement("li");
+        this.dom.classList.add("tile");
+        this.dom.classList.add("has-text-black");
         this.dom.textContent = entryName;
         this.dom.addEventListener("click", (domEvent) =>
             this.onClick(this._mapToControllerEvent(domEvent))

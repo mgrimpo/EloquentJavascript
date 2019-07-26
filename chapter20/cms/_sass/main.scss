@@ -27,3 +27,14 @@ $primary-invert: $pink-invert;
 */
 
 @import "../node_modules/bulma/bulma";
+
+li {
+    margin: 5px;
+}
+li:hover{
+    text-decoration-line: underline;
+}
+ul {
+    flex-wrap: wrap;
+    padding: 10px;
+}

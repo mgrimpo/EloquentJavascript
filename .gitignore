@@ -2,4 +2,5 @@ Eloquent Javascript.code-workspace
 .vscode
 .jshintrc
 node_modules
-chapter20/public
+/chapter20/cms/public
+/chapter20/cms/css
