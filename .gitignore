@@ -1,4 +1,5 @@
 Eloquent Javascript.code-workspace
 .vscode
 .jshintrc
+node_modules
 chapter20/public
