@@ -25,23 +25,22 @@ class DirectoryList {
 
 class FileViewer {
     constructor() {
-        this.dom = document.querySelector("textarea");
+        this.dom = document.querySelector("#fileViewer");
         this.fileName = undefined;
         this.fileContent = undefined;
         this._hide(true);
     }
     updateViewModel(fileName, fileContent) {
-        console.log("Called fileviewer update viewModethis.l")
-        console.log("sss" + fileContent);
         this.fileName = fileName;
         this.fileContent = fileContent;
     }
     _hide(bool) {
-        this.dom.hidden = bool;
+        let displayStyle = bool ? "none" : "block";
+        this.dom.style.display = displayStyle;
     }
     render(){
         console.log(this.fileContent);
-        this.dom.textContent = this.fileContent;
+        this.dom.value = this.fileContent;
         this._hide(false);
     }
 }
@@ -70,7 +69,7 @@ class Model {
         this.currentFileContent = undefined;
         this.loadDirectory();
     }
-    loadDirectory() {
+    async loadDirectory() {
         fetch(this.currentDirectory).then( response =>
             response.text().then( text => {
                 this.directoryContent = text.split("\n");

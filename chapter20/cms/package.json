@@ -1,0 +1,20 @@
+{
+    "author": "Marc Grimpo",
+    "name": "eloquent-javascript-cms-client",
+    "description": "The graphical client for manipulating and viewing files",
+    "dependencies": {
+        "bulma": "^0.7.5"
+    },
+    "license": "ISC",
+    "devDependencies": {
+        "node-sass": "^4.12.0",
+        "npm-run-all": "^4.1.5"
+    },
+    "scripts": {
+        "css-build": "node-sass _sass/main.scss css/main.css",
+        "deploy": "npm run css-build; cp index.* public; cp -r css public",
+        "start-server": "npm run deploy ; cd public && node ../../file_server.js",
+        "kill-server": "kill `lsof -ti tcp:8000` ",
+        "restart-server": "npm-run-all -cs kill-server start-server"
+    }
+}
