@@ -30,9 +30,12 @@ $primary-invert: $pink-invert;
 
 li {
     margin: 5px;
+    text-align: center;
+    white-space: nowrap;
 }
 li:hover{
     text-decoration-line: underline;
+    background-color:  $grey-lighter; 
 }
 ul {
     flex-wrap: wrap;
