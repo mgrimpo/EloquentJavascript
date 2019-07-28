@@ -40,10 +40,10 @@ class FileEditor {
 
     }
     _setEventListeners() {
-        this.domCloseButton.addEventListener("click", domEvent =>  this.onCloseFile(
+        this.domCloseButton.addEventListener("click", domEvent => this.onCloseFile(
             this._mapToControllerEvent(domEvent)
         ));
-        this.domSaveButton.addEventListener("click", domEvent =>  this.onSaveFile(
+        this.domSaveButton.addEventListener("click", domEvent => this.onSaveFile(
             this._mapToControllerEvent(domEvent)
         ));
         this.domFileContent.addEventListener("change", this.onChangeFileContents);
@@ -270,5 +270,15 @@ class Controller {
     }
 }
 
-// eslint-disable-next-line no-unused-vars
-const controller = new Controller(new Model());
+// Only start controller (the application) when this file
+// is not used as a (CommonnJS) module
+try  {
+    module.exports = {
+        directoryList: DirectoryList
+    }
+}
+catch(error) {
+    if (error instanceof ReferenceError){
+        const controller = new Controller(new Model());
+    }
+}

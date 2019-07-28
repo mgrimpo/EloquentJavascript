@@ -8,12 +8,16 @@
     "license": "ISC",
     "devDependencies": {
         "eslint": "^6.1.0",
+        "jsdom": "^15.1.1",
+        "mocha": "^6.2.0",
+        "node-fetch": "^2.6.0",
         "node-sass": "^4.12.0",
         "npm-run-all": "^4.1.5"
     },
     "scripts": {
         "css-build": "node-sass _sass/main.scss css/main.css",
         "deploy": "npm run css-build; cp index.* public; cp -r css public",
+        "test": "mocha",
         "start-server": "npm run deploy ; cd public && node ../../file_server.js",
         "kill-server": "kill `lsof -ti tcp:8000` ",
         "restart-server": "npm-run-all -cs kill-server start-server"
