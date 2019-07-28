@@ -10,26 +10,35 @@
 </head>
 
 <body>
-    <section class="hero">
+    <header class="hero">
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">Eloquent JS: A Custom CMS</h1>
             </div>
         </div>
-    </section>
-    <div class="container">
+    </header>
+    <main class="container">
         <div class="content">
-            <div class="box">
+            <section id="directoryList" class="box">
                 <p>The currrent directory <span id="directoryLabel" style="font-weight:900"></span> has
                     the following content:
                 </p>
                 <ul class="ul tile is-ancestor" id="dirList">
                 </ul>
-            </div>
-            <textarea id="fileViewer" class="textarea" name="File" id="" cols="80" rows="20"></textarea>
-            <button class="button">Save</button>
+            </section>
+
+            <section id="fileEditor" class="box field">
+                <div class="field">
+                    <label id="fileName" class="label">____FileName_____</label>
+                    <textarea id="fileContent" class="textarea" name="File" id="" cols="80" rows="20"></textarea>
+                </div>
+                <div class="field is-grouped">
+                    <button id="saveButton" class="button is-link">Save File</button>
+                    <button id="closeButton" class="button is-text">Cose File</button>
+                </div>
+            </section>
         </div>
-    </div>
+    </main>
     <script src="index.js"></script>
 </body>
 
