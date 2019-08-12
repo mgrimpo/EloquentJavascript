@@ -16,8 +16,7 @@ describe("index.js", () => {
         global.document = dom.window.document;
         global.window = dom.window;
     });
-
-    describe("DirectoryList", (done) => {
+    describe("DirectoryList", () => {
         it("entries should be undefined on new object", () => {
             let directoryList = new indexjs.directoryList ();
             assert.equal(directoryList.entries, undefined);

@@ -1,5 +1,6 @@
 Eloquent Javascript.code-workspace
 .vscode
+.idea/
 .jshintrc
 node_modules
 /chapter20/cms/public

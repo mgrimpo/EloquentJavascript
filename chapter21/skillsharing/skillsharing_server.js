@@ -169,7 +169,10 @@ SkillShareServer.prototype.persist = async function() {
       talks: this.talks,
       version: this.version
     }),
-    console.log
+     e =>  {
+      if (e) throw e;
+      console.log(`${new Date().toTimeString()}:  Successfully persisted server data in '${this.backupFile}'`);
+    }
   );
 };
 

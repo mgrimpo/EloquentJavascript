@@ -30,7 +30,7 @@ function handleAction(state, action) {
 }
 
 function fetchOK(url, options) {
-  return fetch(url, options).then(response => {
+  return fetch(`http://localhost:8000${url}`, options).then(response => {
     if (response.status < 400) return response;
     else throw new Error(response.statusText);
   });
