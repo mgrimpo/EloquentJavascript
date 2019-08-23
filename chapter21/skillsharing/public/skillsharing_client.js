@@ -30,7 +30,8 @@ function handleAction(state, action) {
 }
 
 function fetchOK(url, options) {
-  return fetch(`http://localhost:8000${url}`, options).then(response => {
+  urlWithSlash = url.startsWith("/") ? url  : "/" + url ;
+  return fetch(`http://localhost:8000${urlWithSlash}`, options).then(response => {
     if (response.status < 400) return response;
     else throw new Error(response.statusText);
   });

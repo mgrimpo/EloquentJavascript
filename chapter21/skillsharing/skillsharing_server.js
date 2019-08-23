@@ -16,6 +16,7 @@ var SkillShareServer = class SkillShareServer {
 
     let fileServer = ecstatic({ root: "./public" });
     this.server = createServer((request, response) => {
+      console.log(request.url);
       let resolved = router.resolve(this, request);
       if (resolved) {
         resolved.catch(error => {
