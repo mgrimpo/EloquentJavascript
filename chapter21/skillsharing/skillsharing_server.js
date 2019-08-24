@@ -152,6 +152,7 @@ SkillShareServer.prototype.waitForChanges = function (time) {
 
 SkillShareServer.prototype.updated = function () {
   this.version++;
+  console.log(`Talks updated to new version; current version: ${this.version}`);
   let response = this.talkResponse();
   this.waiting.forEach(resolve => resolve(response));
   this.waiting = [];

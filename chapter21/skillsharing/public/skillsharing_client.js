@@ -64,31 +64,69 @@ function elt(type, props, ...children) {
   }
   return dom;
 }
-
-function renderTalk(talk, dispatch) {
-  return elt(
-    "section", {className: "talk"},
-    elt("h2", null, talk.title, " ", elt("button", {
-      type: "button",
-      onclick() {
-        dispatch({type: "deleteTalk", talk: talk.title});
-      }
-    }, "Delete")),
-    elt("div", null, "by ",
-        elt("strong", null, talk.presenter)),
-    elt("p", null, talk.summary),
-    ...talk.comments.map(renderComment),
-    elt("form", {
-      onsubmit(event) {
-        event.preventDefault();
-        let form = event.target;
-        dispatch({type: "newComment",
+class TalkComponent {
+  constructor(talk, dispatch) {
+    this.talk = talk;
+    this.dispatch = dispatch;
+    this.commentsComponent = new CommentsComponent(talk.comments, dispatch);
+    this.dom = this.renderTalk(this.talk);
+  }
+  renderTalk(talk) {
+    let dispatch = this.dispatch; // Use closure instead of instance variable, because Javascript.
+    return elt(
+        "section", {className: "talk"},
+        elt("h2", null, talk.title, " ", elt("button", {
+          type: "button",
+          onclick() {
+            dispatch({type: "deleteTalk", talk: talk.title});
+          }
+        }, "Delete")),
+        elt("div", null, "by ",
+            elt("strong", null, talk.presenter)),
+        elt("p", null, talk.summary),
+        this.commentsComponent.dom,
+        elt("form", {
+              onsubmit(event) {
+                event.preventDefault();
+                let form = event.target;
+                dispatch({
+                  type: "newComment",
                   talk: talk.title,
-                  message: form.elements.comment.value});
-        form.reset();
-      }
-    }, elt("input", {type: "text", name: "comment"}), " ",
-       elt("button", {type: "submit"}, "Add comment")));
+                  message: form.elements.comment.value
+                })
+                form.reset();
+              }
+            }, elt("input", {type: "text", name: "comment"}), " ",
+            elt("button", {type: "submit"}, "Add comment")));
+  }
+
+  syncState(talk) {
+    if (this.talk !== talk) {
+      this.commentsComponent.syncState(talk.comments);
+      //FIXME: other parts of the dom besides the comments need to be updated
+      this.talk = talk;
+    }
+  }
+}
+
+class CommentsComponent {
+  constructor(comments, dispatch) {
+    this.dispatch = dispatch;
+    this.dom = this.renderComments(comments);
+  }
+
+  syncState(comments) {
+    this.dom.innerHTML = "";
+    comments.map(renderComment).forEach(node => this.dom.appendChild(node));
+  }
+
+  renderComments(comments) {
+    let dispatch = this.dispatch;
+    return elt("div", null,
+        ...comments.map(renderComment),
+    )
+  }
+
 }
 
 function renderComment(comment) {
@@ -138,6 +176,7 @@ var SkillShareApp = class SkillShareApp {
   constructor(state, dispatch) {
     this.dispatch = dispatch;
     this.talkDOM = elt("div", {className: "talks"});
+    this.talkMap = new Map();
     this.dom = elt("div", null,
                    renderUserField(state.user, dispatch),
                    this.talkDOM,
@@ -147,13 +186,37 @@ var SkillShareApp = class SkillShareApp {
 
   syncState(state) {
     if (state.talks != this.talks) {
-      this.talkDOM.textContent = "";
+      this.removeDeletedTalks(state);
       for (let talk of state.talks) {
-        this.talkDOM.appendChild(
-          renderTalk(talk, this.dispatch));
+          if (this.talkMap.has(talk.title)){
+            this.talkMap.get(talk.title).syncState(talk)
+          }
+          else {
+            this.addTalk(talk);
+          }
       }
       this.talks = state.talks;
     }
+  }
+
+  // Check whether some old talks are not present in the new state and remove them accordingly
+  removeDeletedTalks(state) {
+    for (let key of this.talkMap.keys()) {
+      let currentTitles = state.talks.map(talk => talk.title);
+      if (!(currentTitles.includes(key))) {
+        this.deleteTalk(key);
+      }
+    }
+  }
+
+  deleteTalk(talkTitle){
+    this.talkDOM.removeChild(this.talkMap.get(talkTitle).dom);
+    this.talkMap.delete(talkTitle);
+  }
+  addTalk(talk){
+    let talkComponent = new TalkComponent(talk, this.dispatch);
+    this.talkDOM.appendChild(talkComponent.dom);
+    this.talkMap.set(talk.title, talkComponent);
   }
 }
 
