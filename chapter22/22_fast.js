@@ -214,20 +214,82 @@ function exercise1() {
 function exercise2() {
   let graph = treeGraph(6,6);
   let root = graph[0], leaf = graph[graph.length -1];
-  let time = timeFunction( () => findPath(root, leaf).length);
-  console.log(time/1000);
+  timeFunction( () => findPath(root, leaf).length);
 }
 
-/**
- * Run function and return the time it took to run
- * @param fun function to run
- * @returns time in milliseconds elapsed between call and return of function
- */
 function timeFunction(fun) {
   let start = Date.now();
-  fun();
+  let result = fun();
   let end = Date.now();
-  return end - start;
+  console.log(`The function ran in ${end - start} ms and returned:\n${result}\n`)
 }
 
-exercise2();
+function findPathOptimized(source, destination){
+  let workList = [[source]];
+  let visitedNodes = new Set();
+  let path;
+  while (path = workList.shift()) {
+    let lastNode = path[path.length -1];
+    visitedNodes.add(lastNode);
+    if (lastNode === destination) return path;
+    for (let neighbor of lastNode.edges) {
+      if (visitedNodes.has(neighbor)) continue;
+      let newPath = path.slice();
+      newPath.push(neighbor);
+      workList.push(newPath);
+    }
+  }
+  return null;
+}
+
+// This version stores paths as linked lists in reversed order.
+// So the first node in the linked list is the last node in the path and so forth
+function findPathOptimized2(source, destination){
+  let workList = [new ListNode(source, null)];
+  let visitedNodes = new Set();
+  for (let path of workList) {
+    let lastNode = path.value;
+    visitedNodes.add(lastNode);
+    if (lastNode === destination) return path.toArray().reverse();
+    for (let i=0; i< lastNode.edges.length; i++ ) {
+      let neighbor = lastNode.edges[i];
+      if (visitedNodes.has(neighbor)) continue;
+      let newPath = path.prepend(neighbor);
+      workList.push(newPath);
+    }
+  }
+  return null;
+}
+
+class ListNode{
+  constructor(value, nextNode) {
+    this.value = value;
+    this.next = nextNode;
+  }
+
+  toArray() {
+    let currentNode = this;
+    let result = [];
+    while (currentNode){
+     result.push(currentNode.value);
+     currentNode = currentNode.next;
+    }
+    return result;
+  }
+  prepend(value){
+    let preNode = new ListNode(value, this);
+    return preNode;
+  }
+}
+
+function exercise3() {
+  let graph = treeGraph(5,11);
+  let root = graph[0], leaf = graph[graph.length -1];
+   timeFunction( () => findPath(root, leaf).length);
+   timeFunction( () => findPathOptimized(root, leaf).length);
+   timeFunction( () => findPathOptimized2(root, leaf).length);
+}
+
+
+
+exercise3();
