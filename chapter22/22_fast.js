@@ -211,4 +211,23 @@ function exercise1() {
   console.log(findPath(root, leaf).length);
 }
 
-exercise1();
+function exercise2() {
+  let graph = treeGraph(6,6);
+  let root = graph[0], leaf = graph[graph.length -1];
+  let time = timeFunction( () => findPath(root, leaf).length);
+  console.log(time/1000);
+}
+
+/**
+ * Run function and return the time it took to run
+ * @param fun function to run
+ * @returns time in milliseconds elapsed between call and return of function
+ */
+function timeFunction(fun) {
+  let start = Date.now();
+  fun();
+  let end = Date.now();
+  return end - start;
+}
+
+exercise2();
